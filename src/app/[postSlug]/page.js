@@ -6,17 +6,33 @@ import styles from "./postSlug.module.css";
 
 import { loadBlogPost } from "@/helpers/file-helpers";
 
-function BlogPost() {
-  console.log("lolooooooo", loadBlogPost());
+import { MDXRemote } from "next-mdx-remote/rsc";
+
+export async function generateMetadata({ params: { postSlug } }) {
+  const blogPost = await loadBlogPost(postSlug);
+
+  const blog = blogPost.frontmatter;
+
+  const content = blogPost.content;
+
+  return {
+    title: `${postSlug}`,
+    description: `${blog.abstract}`,
+  };
+}
+
+async function BlogPost({ params: { postSlug } }) {
+  const blogPost = await loadBlogPost(postSlug);
+
+  const blog = blogPost.frontmatter;
+
+  const content = blogPost.content;
+
   return (
     <article className={styles.wrapper}>
-      <BlogHero title="Example post!" publishedOn={new Date()} />
+      <BlogHero title={blog.title} publishedOn={blog.publishedOn} />
       <div className={styles.page}>
-        <p>This is where the blog post will go!</p>
-        <p>
-          You will need to use <em>MDX</em> to render all of the elements
-          created from the blog post in this spot.
-        </p>
+        <MDXRemote source={content} />
       </div>
     </article>
   );
