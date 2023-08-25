@@ -8,6 +8,10 @@ import { loadBlogPost } from "@/helpers/file-helpers";
 
 import { MDXRemote } from "next-mdx-remote/rsc";
 
+import CodeSnippet from "@/components/CodeSnippet";
+
+import { Code } from "bright";
+
 export async function generateMetadata({ params: { postSlug } }) {
   const blogPost = await loadBlogPost(postSlug);
 
@@ -23,6 +27,7 @@ export async function generateMetadata({ params: { postSlug } }) {
 
 async function BlogPost({ params: { postSlug } }) {
   const blogPost = await loadBlogPost(postSlug);
+  //console.log("🚀 ~ file: page.js:28 ~ BlogPost ~ blogPost:", blogPost);
 
   const blog = blogPost.frontmatter;
 
@@ -32,7 +37,12 @@ async function BlogPost({ params: { postSlug } }) {
     <article className={styles.wrapper}>
       <BlogHero title={blog.title} publishedOn={blog.publishedOn} />
       <div className={styles.page}>
-        <MDXRemote source={content} />
+        <MDXRemote
+          source={content}
+          components={{
+            pre: CodeSnippet,
+          }}
+        />
       </div>
     </article>
   );
