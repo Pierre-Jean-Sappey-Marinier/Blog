@@ -12,6 +12,8 @@ import CodeSnippet from "@/components/CodeSnippet";
 
 import { Code } from "bright";
 
+import DivisionGroupsDemo from "@/components/DivisionGroupsDemo";
+
 export async function generateMetadata({ params: { postSlug } }) {
   const blogPost = await loadBlogPost(postSlug);
 
@@ -27,7 +29,10 @@ export async function generateMetadata({ params: { postSlug } }) {
 
 async function BlogPost({ params: { postSlug } }) {
   const blogPost = await loadBlogPost(postSlug);
-  //console.log("🚀 ~ file: page.js:28 ~ BlogPost ~ blogPost:", blogPost);
+  console.log(
+    "🚀 ~ file: page.js:28 ~ BlogPost ~ blogPost:",
+    blogPost.publishedOn
+  );
 
   const blog = blogPost.frontmatter;
 
@@ -35,12 +40,13 @@ async function BlogPost({ params: { postSlug } }) {
 
   return (
     <article className={styles.wrapper}>
-      <BlogHero title={blog.title} publishedOn={blog.publishedOn} />
+      {/* <BlogHero title={blog.title} publishedOn={blog.publishedOn} /> */}
       <div className={styles.page}>
         <MDXRemote
           source={content}
           components={{
             pre: CodeSnippet,
+            DivisionGroupsDemo: DivisionGroupsDemo,
           }}
         />
       </div>
