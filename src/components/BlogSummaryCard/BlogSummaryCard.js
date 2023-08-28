@@ -7,6 +7,10 @@ import Card from "@/components/Card";
 import styles from "./BlogSummaryCard.module.css";
 
 function BlogSummaryCard({ slug, title, publishedOn, abstract }) {
+  console.log(
+    "🚀 ~ file: BlogSummaryCard.js:10 ~ BlogSummaryCard ~ publishedOn:",
+    publishedOn
+  );
   const href = `/${slug}`;
   const humanizedDate = format(new Date(publishedOn), "MMMM do, yyyy");
 
