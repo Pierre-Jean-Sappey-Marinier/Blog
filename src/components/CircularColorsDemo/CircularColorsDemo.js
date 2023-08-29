@@ -9,6 +9,8 @@ import VisuallyHidden from "@/components/VisuallyHidden";
 
 import styles from "./CircularColorsDemo.module.css";
 
+import { MotionConfig, LayoutGroup, motion } from "framer-motion";
+
 const COLORS = [
   { label: "red", value: "hsl(348deg 100% 60%)" },
   { label: "yellow", value: "hsl(50deg 100% 55%)" },
@@ -17,11 +19,15 @@ const COLORS = [
 function useTimeElapsed() {
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [isPaused, setIsPaused] = useState(true);
+  const [lolo, setIndex] = useState(0);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (!isPaused) {
         setTimeElapsed((prevTimeElapsed) => prevTimeElapsed + 1);
+        // setIndex((prevIndex) => {
+        //   return prevIndex === 2 ? 0 : prevIndex + 1;
+        // });
       }
     }, 1000);
 
@@ -30,10 +36,19 @@ function useTimeElapsed() {
     };
   }, [isPaused]);
 
-  return { timeElapsed, isPaused, setIsPaused, setTimeElapsed }; // Return isPaused and setIsPaused
+  return {
+    lolo,
+    timeElapsed,
+    isPaused,
+    setIsPaused,
+    setTimeElapsed,
+    setIndex,
+  };
 }
 function CircularColorsDemo() {
-  const { timeElapsed, isPaused, setIsPaused, setTimeElapsed } =
+  const id = React.useId();
+
+  const { timeElapsed, isPaused, lolo, setIsPaused, setTimeElapsed } =
     useTimeElapsed();
 
   const handlePauseClick = () => {
@@ -45,49 +60,44 @@ function CircularColorsDemo() {
     setIsPaused(true);
   };
 
-  // TODO: This value should cycle through the colors in the
-  // COLORS array:
-  // function cycleThroughArray(array) {
-  //   let index = 0;
+  function getColor(timeElapsed) {
+    const colorIndex = timeElapsed % COLORS.length;
+    return COLORS[colorIndex];
+  }
 
-  //   return () => {
-  //     const currentElement = array[index];
-  //     index = (index + 1) % array.length;
-  //     return currentElement;
-  //   };
-  // }
-
-  // const getNextElement = cycleThroughArray(COLORS);
-
-  // for (let i = 0; i < timeElapsed; i++) {
-  //   const color = getNextElement;
-  //   return color;
-  // }
-
-  // const selectedColor = color;
-  const selectedColor = COLORS[0];
+  const selectedColor = getColor(timeElapsed);
 
   return (
     <Card as="section" className={styles.wrapper}>
       <ul className={styles.colorsWrapper}>
         {COLORS.map((color, index) => {
           const isSelected = color.value === selectedColor.value;
-
+          const layoutId = `${id}`;
           return (
-            <li className={styles.color} key={index}>
-              {isSelected && <div className={styles.selectedColorOutline} />}
-              <div
-                className={clsx(
-                  styles.colorBox,
-                  isSelected && styles.selectedColorBox
-                )}
-                style={{
-                  backgroundColor: color.value,
-                }}
-              >
-                <VisuallyHidden>{color.label}</VisuallyHidden>
-              </div>
-            </li>
+            <>
+              <MotionConfig reducedMotion="user">
+                <li className={styles.color} key={index}>
+                  {isSelected && (
+                    <motion.div
+                      layoutId={layoutId}
+                      key={layoutId}
+                      className={styles.selectedColorOutline}
+                    />
+                  )}
+                  <div
+                    className={clsx(
+                      styles.colorBox,
+                      isSelected && styles.selectedColorBox
+                    )}
+                    style={{
+                      backgroundColor: color.value,
+                    }}
+                  >
+                    <VisuallyHidden>{color.label}</VisuallyHidden>
+                  </div>
+                </li>
+              </MotionConfig>
+            </>
           );
         })}
       </ul>
