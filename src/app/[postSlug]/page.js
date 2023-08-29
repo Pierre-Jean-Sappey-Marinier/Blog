@@ -14,6 +14,8 @@ import { Code } from "bright";
 
 import DivisionGroupsDemo from "@/components/DivisionGroupsDemo";
 
+import CircularColorsDemo from "@/components/CircularColorsDemo";
+
 export async function generateMetadata({ params: { postSlug } }) {
   const blogPost = await loadBlogPost(postSlug);
 
@@ -43,6 +45,7 @@ async function BlogPost({ params: { postSlug } }) {
           components={{
             pre: CodeSnippet,
             DivisionGroupsDemo: DivisionGroupsDemo,
+            CircularColorsDemo,
           }}
         />
       </div>

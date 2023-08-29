@@ -58,7 +58,6 @@ function DivisionGroupsDemo({
                     const totalInPreviousGroups =
                       groupIndex * numOfItemsPerGroup;
                     const layoutId = `${id}-${index + totalInPreviousGroups}`;
-                    // return <div key={index} className={styles.item} />;
                     return (
                       <motion.div
                         layoutId={layoutId}
@@ -71,16 +70,24 @@ function DivisionGroupsDemo({
               ))}
             </div>
           </div>
-        </LayoutGroup>
-        {includeRemainderArea && (
-          <div className={styles.remainderArea}>
-            <p className={styles.remainderHeading}>Remainder Area</p>
+          {includeRemainderArea && (
+            <div className={styles.remainderArea}>
+              <p className={styles.remainderHeading}>Remainder Area</p>
 
-            {range(remainder).map((index) => {
-              return <div key={index} className={styles.item} />;
-            })}
-          </div>
-        )}
+              {range(remainder).map((index) => {
+                const layoutId = `${id}+${index}`;
+
+                return (
+                  <motion.div
+                    layoutId={layoutId}
+                    key={layoutId}
+                    className={styles.item}
+                  />
+                );
+              })}
+            </div>
+          )}
+        </LayoutGroup>
 
         <Equation
           dividend={numOfItems}
