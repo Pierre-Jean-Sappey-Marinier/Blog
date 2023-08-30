@@ -16,6 +16,8 @@ import DivisionGroupsDemo from "@/components/DivisionGroupsDemo";
 
 import CircularColorsDemo from "@/components/CircularColorsDemo";
 
+import { notFound } from "next/navigation";
+
 export async function generateMetadata({ params: { postSlug } }) {
   const blogPost = await loadBlogPost(postSlug);
 
