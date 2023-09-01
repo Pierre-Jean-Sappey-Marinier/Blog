@@ -20,15 +20,16 @@ async function Home() {
       <h1 className={styles.mainHeading}>Latest Content:</h1>
 
       {blogPosts.map((item, index) => {
-        return (
-          <BlogSummaryCard
-            key={index}
-            slug={item.slug}
-            title={item.title}
-            abstract={item.abstract}
-            publishedOn={item.publishedOn}
-          />
-        );
+        if (item.slug !== "todo")
+          return (
+            <BlogSummaryCard
+              key={index}
+              slug={item.slug}
+              title={item.title}
+              abstract={item.abstract}
+              publishedOn={item.publishedOn}
+            />
+          );
       })}
     </div>
   );
